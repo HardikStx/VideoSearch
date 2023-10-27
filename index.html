@@ -41,7 +41,15 @@
   <script>
     function showSearchResult() {
       var searchTag = document.getElementById("searchTag").value;
-      google.script.run.withSuccessHandler(displayResult).searchVideos(searchTag);
+      var url = 'https://script.google.com/macros/s/your-web-app-id/exec';
+url += '?action=searchVideos&searchTag=' + searchTag;
+
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    displayResult(data);
+  })
+  .catch(error => console.error('Error:', error));
     }
 
     function sendWhatsApp() {
@@ -49,7 +57,15 @@
       var countryCode = document.getElementById("countryCode").value;
       var mobileNumber = document.getElementById("mobileNumber").value;
 
-      google.script.run.withSuccessHandler(sendWhatsAppMessage).searchVideos(searchTag);
+      var url = 'https://script.google.com/macros/s/your-web-app-id/exec';
+url += '?action=searchVideos&searchTag=' + searchTag;
+
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    displayResult(data);
+  })
+  .catch(error => console.error('Error:', error));
     }
 
     function displayResult(result) {
