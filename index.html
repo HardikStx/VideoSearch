@@ -40,17 +40,16 @@
 
   <script>
     function showSearchResult() {
-      var searchTag = document.getElementById("searchTag").value;
-      var url = 'https://script.google.com/macros/s/AKfycbweja8QusSchZ-Z8EPtKJo6Vr_QouL5PzMIfUy0Yh3sAWpTsodsKrIALaHtoM04CjdR5w/exec';
-url += '?action=searchVideos&searchTag=' + searchTag;
+  var searchTag = document.getElementById("searchTag").value;
+  fetch('https://script.google.com/macros/s/AKfycbw0VAcygc9G5Gji81qH139NdhrEvMlywWSPrjrI2GJ8GNFzTiiQ5ZjJs-OKdbI2Wkj8vA/exec?action=searchVideos&searchTag=' + searchTag)
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      displayResult(data.result);
+    });
+}
 
-fetch(url)
-  .then(response => response.json())
-  .then(data => {
-    displayResult(data);
-  })
-  .catch(error => console.error('Error:', error));
-    }
 
     function sendWhatsApp() {
       var searchTag = document.getElementById("searchTag").value;
