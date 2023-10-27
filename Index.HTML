@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="manifest" href="manifest.json">
+  <base target="_top">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    .container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>YouTube Video Search</h2>
+    <div class="form-group">
+      <label for="searchTag">Enter Tag To Search:</label>
+      <input type="text" class="form-control" id="searchTag" placeholder="Enter a search tag">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="showSearchResult()">Search</button>
+    <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+    <br><br>
+    <div class="form-group">
+      <label for="searchResult">Search Result:</label>
+      <p id="searchResult"></p>
+    </div>
+    <div class="form-group">
+      <label for="countryCode">Country Code:</label>
+      <input type="text" class="form-control" id="countryCode" placeholder="Enter country code(i.e.+91)">
+    </div>
+    <div class="form-group">
+      <label for="mobileNumber">Mobile Number:</label>
+      <input type="text" class="form-control" id="mobileNumber" placeholder="Enter mobile number">
+    </div>
+    <button type="button" class="btn btn-success" id="sendWhatsAppButton" onclick="sendWhatsApp()" disabled>Send WhatsApp</button>
+  </div>
+
+  <script>
+    function showSearchResult() {
+      var searchTag = document.getElementById("searchTag").value;
+      google.script.run.withSuccessHandler(displayResult).searchVideos(searchTag);
+    }
+
+    function sendWhatsApp() {
+      var searchTag = document.getElementById("searchTag").value;
+      var countryCode = document.getElementById("countryCode").value;
+      var mobileNumber = document.getElementById("mobileNumber").value;
+
+      google.script.run.withSuccessHandler(sendWhatsAppMessage).searchVideos(searchTag);
+    }
+
+    function displayResult(result) {
+      var searchResultField = document.getElementById("searchResult");
+      var sendWhatsAppButton = document.getElementById("sendWhatsAppButton");
+
+      if (result === "No Videos Found") {
+        searchResultField.innerHTML = result;
+        sendWhatsAppButton.disabled = true; // Disable the button
+      } else {
+        searchResultField.innerHTML = '<a href="' + result + '" target="_blank">Watch Video</a>';
+        sendWhatsAppButton.disabled = false; // Enable the button
+      }
+    }
+
+    function sendWhatsAppMessage(result) {
+      var countryCode = document.getElementById("countryCode").value;
+      var mobileNumber = document.getElementById("mobileNumber").value;
+
+      var message = "Check out this video: " + result;
+
+      // Create the WhatsApp message link
+      var whatsappLink = "https://api.whatsapp.com/send?phone=" + countryCode + mobileNumber + "&text=" + encodeURIComponent(message);
+
+      // Open the WhatsApp message link in a new tab
+      window.open(whatsappLink, "_blank");
+    }
+
+    function resetForm() {
+      document.getElementById("searchTag").value = "";
+      document.getElementById("searchResult").innerHTML = "";
+      document.getElementById("countryCode").value = "";
+      document.getElementById("mobileNumber").value = "";
+      document.getElementById("sendWhatsAppButton").disabled = true;
+    }
+  </script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+    .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch((error) => {
+      console.log('Service Worker registration failed:', error);
+    });
+  }
+</script>
+</body>
+</html>
