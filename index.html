@@ -72,14 +72,17 @@ fetch(url)
   var searchResultField = document.getElementById("searchResult");
   var sendWhatsAppButton = document.getElementById("sendWhatsAppButton");
 
-  if (result === "No Videos Found") {
-    searchResultField.innerHTML = result;
+  if (result && result.message) {
+    // No videos found
+    searchResultField.innerHTML = result.message;
     sendWhatsAppButton.disabled = true; // Disable the button
   } else {
+    // Videos found
     searchResultField.innerHTML = '<a href="' + result + '" target="_blank">Watch Video</a>';
     sendWhatsAppButton.disabled = false; // Enable the button
   }
 }
+
 
 
     function sendWhatsAppMessage(result) {
