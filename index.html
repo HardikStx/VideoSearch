@@ -39,16 +39,18 @@
   </div>
 
   <script>
-    function showSearchResult() {
-  var searchTag = document.getElementById("searchTag").value;
-  fetch('https://script.google.com/macros/s/AKfycbw0VAcygc9G5Gji81qH139NdhrEvMlywWSPrjrI2GJ8GNFzTiiQ5ZjJs-OKdbI2Wkj8vA/exec?action=searchVideos&searchTag=' + searchTag)
-    .then(function(response) {
-      return response.json();
-    })
-    .then(function(data) {
-      displayResult(data.result);
-    });
+   // Replace "YOUR_PROXY_APP_URL" with the URL of your proxy.php file
+const proxyURL = 'https://hardikstx.github.io/proxy.php?url=';
+
+function showSearchResult() {
+    var searchTag = document.getElementById("searchTag").value;
+    var proxySearchURL = proxyURL + 'https://script.google.com/macros/s/AKfycbw0VAcygc9G5Gji81qH139NdhrEvMlywWSPrjrI2GJ8GNFzTiiQ5ZjJs-OKdbI2Wkj8vA/exec?action=searchVideos&searchTag=' + searchTag;
+    fetch(proxySearchURL)
+        .then(response => response.text())
+        .then(data => displayResult(data))
+        .catch(error => console.error(error));
 }
+
 
 
     function sendWhatsApp() {
