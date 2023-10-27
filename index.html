@@ -69,17 +69,18 @@ fetch(url)
     }
 
     function displayResult(result) {
-      var searchResultField = document.getElementById("searchResult");
-      var sendWhatsAppButton = document.getElementById("sendWhatsAppButton");
+  var searchResultField = document.getElementById("searchResult");
+  var sendWhatsAppButton = document.getElementById("sendWhatsAppButton");
 
-      if (result === "No Videos Found") {
-        searchResultField.innerHTML = result;
-        sendWhatsAppButton.disabled = true; // Disable the button
-      } else {
-        searchResultField.innerHTML = '<a href="' + result + '" target="_blank">Watch Video</a>';
-        sendWhatsAppButton.disabled = false; // Enable the button
-      }
-    }
+  if (result === "No Videos Found") {
+    searchResultField.innerHTML = result;
+    sendWhatsAppButton.disabled = true; // Disable the button
+  } else {
+    searchResultField.innerHTML = '<a href="' + result + '" target="_blank">Watch Video</a>';
+    sendWhatsAppButton.disabled = false; // Enable the button
+  }
+}
+
 
     function sendWhatsAppMessage(result) {
       var countryCode = document.getElementById("countryCode").value;
